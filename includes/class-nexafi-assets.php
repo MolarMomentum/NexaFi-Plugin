@@ -56,17 +56,33 @@ class NexaFi_Assets {
             $should_nocache = true;
         }
 
-        if ( is_a( $post, 'WP_Post' ) ) {
-            if ( 'form' === $post->post_name ||
-                 has_shortcode( $post->post_content, 'nexafi_financing_form' ) ||
-                 has_shortcode( $post->post_content, 'nexafi_financing_application' ) ||
-                 has_shortcode( $post->post_content, 'nexafi_contact_form' ) ) {
+        $current_post = is_a( $post, 'WP_Post' ) ? $post : ( function_exists( 'get_queried_object' ) ? get_queried_object() : null );
+
+        if ( is_a( $current_post, 'WP_Post' ) ) {
+            if ( 'form' === $current_post->post_name ||
+                 has_shortcode( $current_post->post_content, 'nexafi_financing_form' ) ||
+                 has_shortcode( $current_post->post_content, 'nexafi_financing_application' ) ||
+                 has_shortcode( $current_post->post_content, 'nexafi_contact_form' ) ) {
                 $should_nocache = true;
             }
         }
 
-        if ( $should_nocache && function_exists( 'nocache_headers' ) ) {
-            nocache_headers();
+        if ( function_exists( 'is_page' ) && is_page( 'form' ) ) {
+            $should_nocache = true;
+        }
+
+        if ( $should_nocache ) {
+            if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+                define( 'DONOTCACHEPAGE', true );
+            }
+            if ( function_exists( 'nocache_headers' ) ) {
+                nocache_headers();
+            }
+            if ( ! headers_sent() ) {
+                header( 'Cache-Control: no-cache, must-revalidate, max-age=0, no-store, private', true );
+                header( 'Pragma: no-cache', true );
+                header( 'Expires: Wed, 11 Jan 1984 05:00:00 GMT', true );
+            }
         }
     }
 

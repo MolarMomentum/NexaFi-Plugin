@@ -44,7 +44,7 @@ class NexaFi_Updater {
      *
      * @var string
      */
-    private $current_version = '2.4.22';
+    private $current_version = '2.4.23';
 
     /**
      * GitHub repository path (owner/repo)

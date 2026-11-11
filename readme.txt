@@ -4,7 +4,7 @@ Tags: financing, contact form, patient financing, calculator, application
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.4.22
+Stable tag: 2.4.23
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,6 +26,10 @@ NexaFi Financing Application & Contact Form provides an advanced multi-step fina
 Use the shortcode `[nexafi_financing_form]` on your desired page.
 
 == Changelog ==
+
+= 2.4.23 =
+* Harden no-cache enforcement by defining DONOTCACHEPAGE constant and setting raw HTTP response headers for GoDaddy Managed WordPress and Cloudflare edge caches.
+* Robust queried object detection via get_queried_object() and is_page('form') on template_redirect.
 
 = 2.4.22 =
 * Add no-cache HTTP headers (nocache_headers) on template_redirect for NexaFi form pages (homepage, /form/, and pages with shortcode) ensuring fresh HTML, fresh CSRF nonces, and latest assets on every visit.
