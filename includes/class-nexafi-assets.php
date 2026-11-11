@@ -37,6 +37,37 @@ class NexaFi_Assets {
      */
     public function __construct() {
         add_action( 'wp_enqueue_scripts', array( $this, 'register_frontend_assets' ) );
+        add_action( 'template_redirect', array( $this, 'send_nocache_headers' ) );
+    }
+
+    /**
+     * Send no-cache HTTP headers on NexaFi pages (homepage, /form/, and any page containing the shortcode)
+     * so each visitor's browser fetches a fresh copy and avoids stale nonces or cached form markup.
+     */
+    public function send_nocache_headers() {
+        if ( is_admin() ) {
+            return;
+        }
+
+        global $post;
+        $should_nocache = false;
+
+        if ( is_front_page() || is_home() ) {
+            $should_nocache = true;
+        }
+
+        if ( is_a( $post, 'WP_Post' ) ) {
+            if ( 'form' === $post->post_name ||
+                 has_shortcode( $post->post_content, 'nexafi_financing_form' ) ||
+                 has_shortcode( $post->post_content, 'nexafi_financing_application' ) ||
+                 has_shortcode( $post->post_content, 'nexafi_contact_form' ) ) {
+                $should_nocache = true;
+            }
+        }
+
+        if ( $should_nocache && function_exists( 'nocache_headers' ) ) {
+            nocache_headers();
+        }
     }
 
     /**
@@ -110,7 +141,8 @@ class NexaFi_Assets {
         }
 
         if ( is_a( $post, 'WP_Post' ) ) {
-            if ( has_shortcode( $post->post_content, 'nexafi_financing_application' ) ||
+            if ( has_shortcode( $post->post_content, 'nexafi_financing_form' ) ||
+                 has_shortcode( $post->post_content, 'nexafi_financing_application' ) ||
                  has_shortcode( $post->post_content, 'nexafi_contact_form' ) ||
                  'form' === $post->post_name ) {
                 $should_enqueue = true;

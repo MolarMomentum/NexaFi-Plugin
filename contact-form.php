@@ -3,7 +3,7 @@
  * Plugin Name: NexaFi Financing Application & Contact Form
  * Plugin URI:https://github.com/MolarMomentum/NexaFi-Plugin
  * Description: Complete 5-screen patient financing application workflow, eligibility engine, GDG representative management, reporting, and admin dashboard for NexaFi / GDG Smiles.
- * Version: 2.4.21
+ * Version: 2.4.22
  * Author: NexaFi & GDG Smiles Team
  * Author URI:https://xortlogix.com/
  * Text Domain: nexafi-plugin
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants
-define( 'NEXAFI_CF_VERSION', '2.4.21' );
+define( 'NEXAFI_CF_VERSION', '2.4.22' );
 define( 'NEXAFI_CF_PLUGIN_FILE', __FILE__ );
 define( 'NEXAFI_CF_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NEXAFI_CF_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -112,6 +112,7 @@ final class NexaFi_Financing_Plugin {
         }
 
         update_option( 'nexafi_db_version', NEXAFI_CF_VERSION );
+        self::flush_host_caches();
     }
 
     /**
@@ -125,11 +126,12 @@ final class NexaFi_Financing_Plugin {
      * Bootstrap instances
      */
     public function bootstrap() {
-        // Self-healing database check
+        // Self-healing database check & cache flush on update
         if ( get_option( 'nexafi_db_version' ) !== NEXAFI_CF_VERSION ) {
             $db = NexaFi_DB::get_instance();
             $db->create_tables();
             update_option( 'nexafi_db_version', NEXAFI_CF_VERSION );
+            self::flush_host_caches();
         }
 
         NexaFi_Assets::get_instance();
@@ -155,6 +157,53 @@ final class NexaFi_Financing_Plugin {
         );
         array_unshift( $links, $settings_link, $check_update_link );
         return $links;
+    }
+
+    /**
+     * Flush host caches (GoDaddy Managed WordPress, object cache, and popular caching plugins)
+     */
+    public static function flush_host_caches() {
+        // 1. GoDaddy Managed WordPress (WPaaS / Varnish)
+        if ( has_action( 'wpaas_flush_cache' ) ) {
+            do_action( 'wpaas_flush_cache' );
+        }
+        if ( class_exists( '\WPaaS\Cache' ) ) {
+            if ( method_exists( '\WPaaS\Cache', 'ban' ) ) {
+                \WPaaS\Cache::ban();
+            } elseif ( method_exists( '\WPaaS\Cache', 'flush' ) ) {
+                \WPaaS\Cache::flush();
+            }
+        }
+
+        // 2. Core WordPress Object Cache
+        if ( function_exists( 'wp_cache_flush' ) ) {
+            wp_cache_flush();
+        }
+
+        // 3. WP Rocket
+        if ( function_exists( 'rocket_clean_domain' ) ) {
+            rocket_clean_domain();
+        }
+
+        // 4. LiteSpeed Cache
+        if ( class_exists( '\LiteSpeed\Purge' ) && method_exists( '\LiteSpeed\Purge', 'purge_all' ) ) {
+            \LiteSpeed\Purge::purge_all();
+        }
+
+        // 5. W3 Total Cache
+        if ( function_exists( 'w3tc_flush_all' ) ) {
+            w3tc_flush_all();
+        }
+
+        // 6. WP Super Cache
+        if ( function_exists( 'wp_cache_clear_cache' ) ) {
+            wp_cache_clear_cache();
+        }
+
+        // 7. Autoptimize
+        if ( class_exists( 'autoptimizeCache' ) && method_exists( 'autoptimizeCache', 'clearall' ) ) {
+            autoptimizeCache::clearall();
+        }
     }
 }
 

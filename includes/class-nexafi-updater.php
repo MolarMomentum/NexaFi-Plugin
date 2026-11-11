@@ -44,7 +44,7 @@ class NexaFi_Updater {
      *
      * @var string
      */
-    private $current_version = '2.4.21';
+    private $current_version = '2.4.22';
 
     /**
      * GitHub repository path (owner/repo)
@@ -123,6 +123,9 @@ class NexaFi_Updater {
             delete_site_transient( 'update_plugins' );
             if ( function_exists( 'wp_clean_plugins_cache' ) ) {
                 wp_clean_plugins_cache();
+            }
+            if ( class_exists( 'NexaFi_Financing_Plugin' ) && method_exists( 'NexaFi_Financing_Plugin', 'flush_host_caches' ) ) {
+                NexaFi_Financing_Plugin::flush_host_caches();
             }
         }
     }
@@ -336,6 +339,9 @@ class NexaFi_Updater {
     public function purge_cache( $upgrader, $options ) {
         if ( isset( $options['action'], $options['type'] ) && 'update' === $options['action'] && 'plugin' === $options['type'] ) {
             delete_site_transient( $this->transient_key );
+            if ( class_exists( 'NexaFi_Financing_Plugin' ) && method_exists( 'NexaFi_Financing_Plugin', 'flush_host_caches' ) ) {
+                NexaFi_Financing_Plugin::flush_host_caches();
+            }
         }
     }
 
