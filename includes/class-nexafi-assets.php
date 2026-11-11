@@ -38,6 +38,28 @@ class NexaFi_Assets {
     public function __construct() {
         add_action( 'wp_enqueue_scripts', array( $this, 'register_frontend_assets' ) );
         add_action( 'template_redirect', array( $this, 'send_nocache_headers' ) );
+        add_filter( 'wp_headers', array( $this, 'filter_wp_headers' ) );
+    }
+
+    /**
+     * Filter WordPress headers array early
+     *
+     * @param array $headers
+     * @return array
+     */
+    public function filter_wp_headers( $headers ) {
+        if ( is_admin() ) {
+            return $headers;
+        }
+
+        if ( is_front_page() || is_home() || ( function_exists( 'is_page' ) && is_page( 'form' ) ) ) {
+            $headers['Cache-Control']   = 'no-cache, must-revalidate, max-age=0, no-store, private';
+            $headers['Pragma']          = 'no-cache';
+            $headers['Expires']         = 'Wed, 11 Jan 1984 05:00:00 GMT';
+            $headers['X-Accel-Expires'] = '0';
+        }
+
+        return $headers;
     }
 
     /**
@@ -82,6 +104,7 @@ class NexaFi_Assets {
                 header( 'Cache-Control: no-cache, must-revalidate, max-age=0, no-store, private', true );
                 header( 'Pragma: no-cache', true );
                 header( 'Expires: Wed, 11 Jan 1984 05:00:00 GMT', true );
+                header( 'X-Accel-Expires: 0', true );
             }
         }
     }
