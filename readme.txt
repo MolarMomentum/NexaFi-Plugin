@@ -4,7 +4,7 @@ Tags: financing, contact form, patient financing, calculator, application
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.4.20
+Stable tag: 2.4.21
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,6 +26,11 @@ NexaFi Financing Application & Contact Form provides an advanced multi-step fina
 Use the shortcode `[nexafi_financing_form]` on your desired page.
 
 == Changelog ==
+
+= 2.4.21 =
+* Switch auto-updater repository to MolarMomentum/NexaFi-Plugin.
+* Revert outcome screen return button text back to "Return to GDG Smiles →".
+* Remove test suite directory from repository distribution.
 
 = 2.4.20 =
 * Fix Privacy Policy URL: hide View Privacy Policy link when the setting is empty, and dynamically open configured destination when present.
