@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: NexaFi Financing Application & Contact Form
- * Plugin URI:https://github.com/workwithasim/NexaFi-Plugin
+ * Plugin URI:https://github.com/MolarMomentum/NexaFi-Plugin
  * Description: Complete 5-screen patient financing application workflow, eligibility engine, GDG representative management, reporting, and admin dashboard for NexaFi / GDG Smiles.
  * Version: 2.4.20
  * Author: NexaFi & GDG Smiles Team

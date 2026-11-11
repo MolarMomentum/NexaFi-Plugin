@@ -1598,7 +1598,7 @@ class NexaFi_Admin {
                             <th scope="row"><label for="nexafi_return_url"><?php esc_html_e( 'Return to GDG Smiles URL', 'nexafi-plugin' ); ?></label></th>
                             <td>
                                 <input type="url" name="nexafi_return_url" id="nexafi_return_url" value="<?php echo esc_attr( $return_url ); ?>" class="regular-text" placeholder="https://gdgsmiles.com/" />
-                                <p class="description"><?php esc_html_e( 'Destination for the "Back to Website" return button on outcome screens (Screen 4 ineligibility and Screen 5 confirmation).', 'nexafi-plugin' ); ?></p>
+                                <p class="description"><?php esc_html_e( 'Destination for the "Return to GDG Smiles" return button on outcome screens (Screen 4 ineligibility and Screen 5 confirmation).', 'nexafi-plugin' ); ?></p>
                             </td>
                         </tr>
                         <tr>

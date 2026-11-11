@@ -2,7 +2,7 @@
 /**
  * NexaFi GitHub Auto-Updater
  *
- * Checks for updates from the official GitHub repository (workwithasim/NexaFi-Plugin)
+ * Checks for updates from the official GitHub repository (MolarMomentum/NexaFi-Plugin)
  * and seamlessly displays update notifications in WordPress, handles package downloads,
  * and extracts updates into the proper plugin directory.
  *
@@ -51,7 +51,7 @@ class NexaFi_Updater {
      *
      * @var string
      */
-    private $github_repo = 'workwithasim/NexaFi-Plugin';
+    private $github_repo = 'MolarMomentum/NexaFi-Plugin';
 
     /**
      * Cache key for transient

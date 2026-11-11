@@ -593,7 +593,7 @@ class NexaFi_Shortcode {
                                 <span class="nexafi-btn-arrow" aria-hidden="true">&rarr;</span>
                             </a>
                             <a href="<?php echo esc_url( $return_url ); ?>" class="nexafi-btn nexafi-btn-secondary nexafi-btn-return-home" style="<?php echo empty( $return_url ) ? 'display: none;' : 'display: flex;'; ?> text-decoration: none; justify-content: center; align-items: center;">
-                                <span class="nexafi-btn-label">Back to Website</span>
+                                <span class="nexafi-btn-label"><?php esc_html_e( 'Return to GDG Smiles', 'nexafi-plugin' ); ?></span>
                             </a>
                         </div>
 
@@ -701,7 +701,7 @@ class NexaFi_Shortcode {
                     <!-- Return Action Button -->
                     <div class="nexafi-form-action"<?php echo empty( $return_url ) ? ' style="display: none;"' : ''; ?>>
                         <a href="<?php echo esc_url( $return_url ); ?>" class="nexafi-btn nexafi-btn-primary nexafi-btn-return">
-                            <span class="nexafi-btn-label"><?php esc_html_e( 'Back to Website', 'nexafi-plugin' ); ?></span>
+                            <span class="nexafi-btn-label"><?php esc_html_e( 'Return to GDG Smiles', 'nexafi-plugin' ); ?></span>
                             <span class="nexafi-btn-arrow" aria-hidden="true">&rarr;</span>
                         </a>
                     </div>
